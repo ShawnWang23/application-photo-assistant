@@ -1,0 +1,13 @@
+.git
+.venv
+.venv-py310
+__pycache__
+.pytest_cache
+.env
+.streamlit/secrets.toml
+tests
+output
+build
+dist
+*.egg-info
+*.spec

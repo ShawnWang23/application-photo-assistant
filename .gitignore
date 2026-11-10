@@ -1,0 +1,13 @@
+.venv/
+.venv-py310/
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.coverage
+htmlcov/
+.env
+.streamlit/secrets.toml
+output/
+build/
+dist/
