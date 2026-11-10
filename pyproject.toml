@@ -1,0 +1,39 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "application-photo-assistant"
+version = "4.0.0"
+description = "Agent-based application photo adaptation and validation tool"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+  "streamlit>=1.39,<2",
+  "Pillow>=13,<14",
+  "pydantic>=2.8,<3",
+  "openai>=1.99,<3",
+  "rapidocr>=3.10,<4",
+  "onnxruntime>=1.20,<2",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<10"]
+
+[project.scripts]
+photo-assistant = "photo_assistant.__main__:main"
+
+[tool.setuptools.packages.find]
+include = ["photo_assistant*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+
+[tool.ruff]
+target-version = "py310"
+line-length = 110
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+ignore = ["BLE001", "E501"]
