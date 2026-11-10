@@ -1,3 +1,4 @@
+# Retry after validating the Windows compiler path.
 name: publish-v4-bootstrap
 
 on:
