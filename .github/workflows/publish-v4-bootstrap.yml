@@ -1,3 +1,4 @@
+# Retry with the bundled Simplified Chinese installer language.
 # Retry after validating the Windows compiler path.
 name: publish-v4-bootstrap
 
