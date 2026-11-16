@@ -48,6 +48,20 @@ def test_transparent_png_can_be_converted_to_jpeg() -> None:
         assert image.format == "JPEG"
 
 
+def test_output_removes_source_exif_metadata() -> None:
+    image = Image.new("RGB", (900, 600), (42, 110, 180))
+    exif = Image.Exif()
+    exif[270] = "private application photo"
+    source = BytesIO()
+    image.save(source, format="JPEG", exif=exif)
+
+    result = ApplicationPhotoAgent().run(source.getvalue(), PhotoRequirements())
+
+    with Image.open(BytesIO(result.output_bytes)) as output:
+        assert not output.getexif()
+        assert b"private application photo" not in result.output_bytes
+
+
 @pytest.mark.parametrize(
     ("output_format", "pil_format"),
     [(ImageFormat.PNG, "PNG"), (ImageFormat.WEBP, "WEBP")],
