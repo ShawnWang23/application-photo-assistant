@@ -6,6 +6,7 @@
 - 要求截图只由本地 RapidOCR 读取。
 - 只有用户确认后的要求文字会在点击 AI 解析时发送给所选厂商。
 - 页面输入的 API Key 只保存在当前运行会话，不写入项目文件。
+- Web 模式不会读取服务端环境变量中的模型 API Key，避免把部署者的 Key 预填并下发给浏览器。
 
 桌面版与 Web 版的承诺不同，详见 `docs/PRIVACY_DESKTOP.md` 和 `docs/PRIVACY_WEB.md`。部署 Web 版时必须设置：
 
@@ -15,9 +16,15 @@ PHOTO_ASSISTANT_DEPLOYMENT=web
 
 该模式会禁用自定义 API Base URL，只允许内置厂商的官方 HTTPS 地址，避免公共服务器被用来访问 localhost、内网或云元数据服务。
 
+桌面模式允许连接本机回环地址上的 HTTP 开发服务；所有非本机模型地址必须使用 HTTPS，Base URL 不能包含用户名、密码、查询参数或片段。
+
 ## 使用 API Key
 
 不要把真实 Key 写入源码、Issue、日志或截图。若 Key 曾出现在聊天记录或公开位置，应立即在对应厂商控制台撤销并重新创建。
+
+公开提交前建议运行 `uvx detect-secrets scan .`，并检查完整 Git 历史而不只是当前工作树。贡献者应使用 GitHub 提供的 `noreply` 邮箱提交，避免把私人邮箱写入公开 Commit 元数据。
+
+本仓库会忽略常见的 `.env.*`、数据库、日志、上传目录和私钥文件，但忽略规则不能替代提交前人工检查。
 
 ## 文件防护
 

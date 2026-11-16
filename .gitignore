@@ -7,7 +7,25 @@ __pycache__/
 .coverage
 htmlcov/
 .env
+.env.*
+!.env.example
 .streamlit/secrets.toml
 output/
 build/
 dist/
+
+# Local user data and diagnostics
+data/
+uploads/
+photos/
+logs/
+*.log
+*.db
+*.sqlite
+*.sqlite3
+
+# Private keys and signing material
+*.pem
+*.key
+*.p12
+*.pfx

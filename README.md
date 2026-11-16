@@ -85,6 +85,8 @@ docker run --rm -p 8501:8501 -e PHOTO_ASSISTANT_DEPLOYMENT=web application-photo
 
 Web 部署必须设置 `PHOTO_ASSISTANT_DEPLOYMENT=web`。这会禁用自定义 Base URL 并只允许内置厂商的官方 HTTPS 地址。Web 版会把照片上传到服务器，不能宣传为“照片不离开用户电脑”。上线前必须完成 [Web 隐私模板](docs/PRIVACY_WEB.md)。
 
+Web 模式不会把服务器环境变量中的模型 API Key 预填到用户浏览器；公开部署默认要求用户自行提供 Key。桌面模式的非本机模型地址必须使用 HTTPS，本机开发服务可使用回环地址 HTTP。
+
 ## Windows 构建
 
 本机需安装 Python 3.12 和 Inno Setup 6 或 7：

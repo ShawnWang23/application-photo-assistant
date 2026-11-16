@@ -9,7 +9,11 @@ from PIL import Image
 from photo_assistant.agent import ApplicationPhotoAgent, ToolRegistry
 from photo_assistant.image_tools import encode_to_limit, fit_image, load_image, validate_output
 from photo_assistant.models import PhotoRequirements
-from photo_assistant.security import SecurityError, validate_provider_endpoint
+from photo_assistant.security import (
+    SecurityError,
+    provider_key_from_environment,
+    validate_provider_endpoint,
+)
 from photo_assistant.services.batch_service import process_batch
 from photo_assistant.version import __version__
 
@@ -67,7 +71,7 @@ def test_web_deployment_rejects_custom_endpoint(monkeypatch: pytest.MonkeyPatch)
 
     with pytest.raises(SecurityError, match="在线版已禁用"):
         validate_provider_endpoint(
-            "http://127.0.0.1:8000/v1",
+            "https://example.com/v1",
             provider_id="custom",
             trusted_url="",
         )
@@ -80,6 +84,48 @@ def test_web_deployment_rejects_custom_endpoint(monkeypatch: pytest.MonkeyPatch)
         )
         == "https://api.openai.com/v1"
     )
+
+
+def test_web_deployment_never_reads_provider_key_from_environment(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    monkeypatch.setenv("PHOTO_ASSISTANT_DEPLOYMENT", "web")
+    monkeypatch.setenv("OPENAI_API_KEY", "server-secret-must-not-reach-browser")
+
+    assert provider_key_from_environment("OPENAI_API_KEY") == ""
+
+
+def test_desktop_environment_key_and_local_http_endpoint(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PHOTO_ASSISTANT_DEPLOYMENT", "desktop")
+    monkeypatch.setenv("OPENAI_API_KEY", "desktop-only-key")
+
+    assert provider_key_from_environment("OPENAI_API_KEY") == "desktop-only-key"
+    assert (
+        validate_provider_endpoint(
+            "http://127.0.0.1:8000/v1",
+            provider_id="custom",
+            trusted_url="",
+        )
+        == "http://127.0.0.1:8000/v1"
+    )
+
+    with pytest.raises(SecurityError, match="必须使用 HTTPS"):
+        validate_provider_endpoint(
+            "http://example.com/v1",
+            provider_id="custom",
+            trusted_url="",
+        )
+
+
+def test_provider_endpoint_rejects_query_and_fragment(monkeypatch: pytest.MonkeyPatch) -> None:
+    monkeypatch.setenv("PHOTO_ASSISTANT_DEPLOYMENT", "desktop")
+
+    with pytest.raises(SecurityError, match="查询参数或片段"):
+        validate_provider_endpoint(
+            "https://example.com/v1?token=unsafe",
+            provider_id="custom",
+            trusted_url="",
+        )
 
 
 def test_batch_unexpected_error_is_sanitized() -> None:
