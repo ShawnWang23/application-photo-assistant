@@ -45,10 +45,20 @@ jobs:
       - name: Verify packaged application
         shell: pwsh
         run: |
-          & .\dist\ApplicationPhotoAssistant.exe --self-test
-          if ($LASTEXITCODE -ne 0) { throw "Self-test failed: $LASTEXITCODE" }
-          & .\dist\ApplicationPhotoAssistant.exe --smoke-test
-          if ($LASTEXITCODE -ne 0) { throw "Smoke-test failed: $LASTEXITCODE" }
+          $selfTest = Start-Process `
+            -FilePath .\dist\ApplicationPhotoAssistant.exe `
+            -ArgumentList "--self-test" `
+            -WindowStyle Hidden `
+            -Wait `
+            -PassThru
+          if ($selfTest.ExitCode -ne 0) { throw "Self-test failed: $($selfTest.ExitCode)" }
+          $smokeTest = Start-Process `
+            -FilePath .\dist\ApplicationPhotoAssistant.exe `
+            -ArgumentList "--smoke-test" `
+            -WindowStyle Hidden `
+            -Wait `
+            -PassThru
+          if ($smokeTest.ExitCode -ne 0) { throw "Smoke-test failed: $($smokeTest.ExitCode)" }
       - name: Install Inno Setup
         run: choco install innosetup --no-progress -y
       - name: Build installer

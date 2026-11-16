@@ -28,10 +28,10 @@ if (-not $SkipTests) {
 & $pythonPath -m PyInstaller --noconfirm --clean ApplicationPhotoAssistant.spec
 
 $portableExe = Join-Path $projectRoot "dist\ApplicationPhotoAssistant.exe"
-& $portableExe --self-test
-if ($LASTEXITCODE -ne 0) { throw "Packaged self-test failed with exit code $LASTEXITCODE" }
-& $portableExe --smoke-test
-if ($LASTEXITCODE -ne 0) { throw "Packaged smoke-test failed with exit code $LASTEXITCODE" }
+$selfTest = Start-Process -FilePath $portableExe -ArgumentList "--self-test" -WindowStyle Hidden -Wait -PassThru
+if ($selfTest.ExitCode -ne 0) { throw "Packaged self-test failed with exit code $($selfTest.ExitCode)" }
+$smokeTest = Start-Process -FilePath $portableExe -ArgumentList "--smoke-test" -WindowStyle Hidden -Wait -PassThru
+if ($smokeTest.ExitCode -ne 0) { throw "Packaged smoke-test failed with exit code $($smokeTest.ExitCode)" }
 
 $version = & $pythonPath -c "from photo_assistant.version import __version__; print(__version__)"
 if (-not $SkipInstaller) {
