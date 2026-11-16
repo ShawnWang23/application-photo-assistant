@@ -108,5 +108,6 @@ jobs:
             $portable `
             $installer.FullName `
             $checksums `
+            --repo $env:GITHUB_REPOSITORY `
             --title "Application Photo Assistant · $displayVersion" `
             --generate-notes
