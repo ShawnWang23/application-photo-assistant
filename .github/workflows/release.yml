@@ -99,12 +99,14 @@ jobs:
           GH_TOKEN: ${{ github.token }}
         shell: pwsh
         run: |
-          $installer = Get-ChildItem .\dist\installer\*.exe | Select-Object -First 1
+          $installer = Get-ChildItem "./dist/installer/*.exe" | Select-Object -First 1
           if (-not $installer) { throw "Installer artifact not found" }
+          $portable = (Resolve-Path "./dist/ApplicationPhotoAssistant.exe").Path
+          $checksums = (Resolve-Path "./dist/SHA256SUMS.txt").Path
           $displayVersion = $env:GITHUB_REF_NAME -replace '^v', ''
           gh release create $env:GITHUB_REF_NAME `
-            .\dist\ApplicationPhotoAssistant.exe `
+            $portable `
             $installer.FullName `
-            .\dist\SHA256SUMS.txt `
+            $checksums `
             --title "Application Photo Assistant · $displayVersion" `
             --generate-notes
