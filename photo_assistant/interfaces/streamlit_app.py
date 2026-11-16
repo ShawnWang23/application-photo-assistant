@@ -19,7 +19,7 @@ from photo_assistant.provider import (
     ProviderProfile,
 )
 from photo_assistant.reporting import result_manifest_json
-from photo_assistant.security import deployment_mode
+from photo_assistant.security import deployment_mode, provider_key_from_environment
 from photo_assistant.services import BatchOutcome, ProcessingService, build_batch_zip, process_batch
 from photo_assistant.version import __version__
 
@@ -207,7 +207,7 @@ def render_provider_sidebar() -> ProviderConfig:
         api_key = st.text_input(
             profile.key_label,
             type="password",
-            value=st.session_state.get(saved_key_state, os.getenv(profile.key_env, "")),
+            value=st.session_state.get(saved_key_state, provider_key_from_environment(profile.key_env)),
             placeholder="仅保存在当前运行会话",
             key=f"provider_key_{provider_id}",
         )
