@@ -1,5 +1,5 @@
 #ifndef MyAppVersion
-  #define MyAppVersion "4.0.0"
+  #define MyAppVersion "2026.11.17"
 #endif
 
 #define MyAppName "Application Photo Assistant"

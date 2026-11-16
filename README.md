@@ -1,4 +1,4 @@
-# Application Photo Assistant 4.0
+# Application Photo Assistant
 
 [![Tests](https://github.com/ShawnWang23/application-photo-assistant/actions/workflows/tests.yml/badge.svg)](https://github.com/ShawnWang23/application-photo-assistant/actions/workflows/tests.yml)
 [![Release](https://github.com/ShawnWang23/application-photo-assistant/actions/workflows/release.yml/badge.svg)](https://github.com/ShawnWang23/application-photo-assistant/actions/workflows/release.yml)
@@ -27,7 +27,7 @@
 - OpenAI、DeepSeek、Kimi、豆包、SiliconFlow 与自定义兼容接口。
 - 统一工具结果、错误码、Trace ID、执行耗时和失败恢复轨迹。
 
-## Agent 4.0
+## 受控 Agent 工作流
 
 ```text
 自然语言/截图要求
@@ -51,7 +51,7 @@ Agent 不会为了“成功”擅自突破最低画质、尺寸、格式或大�
 从 GitHub Release 下载：
 
 ```text
-ApplicationPhotoAssistant-Setup-4.0.0-windows-x64.exe
+ApplicationPhotoAssistant-Setup-2026.11.17-windows-x64.exe
 SHA256SUMS.txt
 ```
 
@@ -99,7 +99,7 @@ Web 模式不会把服务器环境变量中的模型 API Key 预填到用户浏�
 
 ```text
 dist/ApplicationPhotoAssistant.exe
-dist/installer/ApplicationPhotoAssistant-Setup-4.0.0-windows-x64.exe
+dist/installer/ApplicationPhotoAssistant-Setup-2026.11.17-windows-x64.exe
 dist/SHA256SUMS.txt
 ```
 
@@ -108,7 +108,7 @@ dist/SHA256SUMS.txt
 ## 自动发布
 
 1. 同步修改 `photo_assistant/version.py`、`pyproject.toml` 和 `CHANGELOG.md`。
-2. 推送与版本一致的 Tag，例如 `v4.0.0`。
+2. 推送与版本一致的日期 Tag，例如 `v2026.11.17`。
 3. `.github/workflows/release.yml` 在 Windows Runner 上完成测试、构建、自检、安装器和 SHA256。
 4. 工作流创建 GitHub Release 并上传安装器、便携版和校验文件。
 
@@ -150,6 +150,6 @@ docs/archive/                           旧实现去向说明，不参与运行
 - [Web 端隐私模板](docs/PRIVACY_WEB.md)
 - [安全策略](SECURITY.md)
 - [版本记录](CHANGELOG.md)
-- [4.0.0 Release Notes](docs/RELEASE_NOTES_4.0.0.md)
+- [当前版本说明](docs/RELEASE_NOTES_2026.11.17.md)
 
 软件不会做人脸识别、美颜、换脸或身份特征修改。预设只是常见参考；提交前仍需以目标机构的最新要求为准。当前尚未交付自动人像构图、SQLite 持久历史、PDF OCR、自动更新和正式在线服务，路线图不会伪装成已完成功能。

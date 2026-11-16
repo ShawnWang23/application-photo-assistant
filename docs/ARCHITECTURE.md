@@ -1,4 +1,4 @@
-# Architecture 4.0
+# Architecture
 
 ```text
 app.py / desktop_launcher.py / CLI

@@ -138,7 +138,10 @@ def test_batch_unexpected_error_is_sanitized() -> None:
 
 
 def test_release_files_and_versions_are_consistent() -> None:
-    assert __version__ == "4.0.0"
-    assert 'version = "4.0.0"' in (ROOT / "pyproject.toml").read_text(encoding="utf-8")
-    assert (ROOT / "installer" / "ApplicationPhotoAssistant.iss").is_file()
+    assert __version__ == "2026.11.17"
+    assert 'version = "2026.11.17"' in (ROOT / "pyproject.toml").read_text(encoding="utf-8")
+    installer = (ROOT / "installer" / "ApplicationPhotoAssistant.iss").read_text(encoding="utf-8")
+    assert '#define MyAppVersion "2026.11.17"' in installer
+    assert (ROOT / "docs" / "RELEASE_NOTES_2026.11.17.md").is_file()
+    assert (ROOT / "assets" / "app.ico").read_bytes().startswith(b"\x00\x00\x01\x00")
     assert (ROOT / ".github" / "workflows" / "release.yml").is_file()

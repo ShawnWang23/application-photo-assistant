@@ -91,9 +91,10 @@ jobs:
         run: |
           $installer = Get-ChildItem .\dist\installer\*.exe | Select-Object -First 1
           if (-not $installer) { throw "Installer artifact not found" }
+          $displayVersion = $env:GITHUB_REF_NAME -replace '^v', ''
           gh release create $env:GITHUB_REF_NAME `
             .\dist\ApplicationPhotoAssistant.exe `
             $installer.FullName `
             .\dist\SHA256SUMS.txt `
-            --title "Application Photo Assistant $env:GITHUB_REF_NAME" `
+            --title "Application Photo Assistant · $displayVersion" `
             --generate-notes

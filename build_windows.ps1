@@ -35,6 +35,11 @@ if ($LASTEXITCODE -ne 0) { throw "Packaged smoke-test failed with exit code $LAS
 
 $version = & $pythonPath -c "from photo_assistant.version import __version__; print(__version__)"
 if (-not $SkipInstaller) {
+    $installerOutput = Join-Path $projectRoot "dist\installer"
+    if (Test-Path -LiteralPath $installerOutput) {
+        Get-ChildItem -LiteralPath $installerOutput -Filter "ApplicationPhotoAssistant-Setup-*-windows-x64.exe" -File |
+            Remove-Item -Force
+    }
     $compilerCandidates = @(
         "${env:ProgramFiles(x86)}\Inno Setup 7\ISCC.exe",
         "$env:ProgramFiles\Inno Setup 7\ISCC.exe",
